@@ -1,0 +1,35 @@
+- hosts: localhost
+  become: true
+
+  tasks:
+
+    - name: remove old versions
+      shell: sh remove.sh
+     
+    - name: installing packages
+      yum:  
+        name: ["yum-utils","device-mapper-persistent-data","lvm2"] 
+      state: "installed"
+
+    - name: add  repository
+      yum_repository:
+        name: docker-ce
+        description: docker-ce repo
+        baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: installing packages
+      yum:  
+        name: ["docker-ce","docker-ce-cli","containerd.io"]
+      state: "installed"
+
+    - name: start the service
+      service:
+        name: "docker"
+        state: "restarted"
+
+    
+     
+     
+     
+
+  

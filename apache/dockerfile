@@ -1,0 +1,7 @@
+FROM centos
+MAINTAINER devops
+LABEL 0S=APACHE
+RUN yum install httpd -y 
+CMD ["httpd","-D","FOREGROUND"]
+
+

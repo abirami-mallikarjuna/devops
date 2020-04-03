@@ -1,6 +1,7 @@
 #!/bin/bash
 
-yum install git -y
+
+( rpm -q git ) || yum install git -y 
 
 git clone https://github.com/abirami-mallikarjuna/devops.git
 

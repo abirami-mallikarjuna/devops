@@ -5,6 +5,8 @@
 
 git clone https://github.com/abirami-mallikarjuna/devops.git
 
+ansible-pull -i localhost -U https://github.com/abirami-mallikarjuna/devops.git apache/docker.yml
+ansible-pull -i localhost -U https://github.com/abirami-mallikarjuna/devops.git apache/installdc.yml
 
 cd devops/apache
 

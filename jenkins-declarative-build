@@ -1,5 +1,9 @@
 pipeline{
     agent any
+    
+    environment{
+            PATH = "/maven/bin:$PATH"
+    }
     stages{
         stage("Git checkout"){
             steps{
@@ -9,7 +13,7 @@ pipeline{
         stage("maven build"){
            steps{
                sh '''
-               mvn clean 
+               mvn clean
                '''
            }
         }

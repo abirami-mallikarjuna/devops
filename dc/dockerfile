@@ -1,0 +1,7 @@
+FROM jenkins
+MAINTAINER devops
+LABEL 0S=DC
+ENV JENKINS_HOME="/var/lib/jenkins"
+EXPOSE 8083
+ENTRYPOINT ["java","jar","jenkins.war"]
+

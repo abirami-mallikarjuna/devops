@@ -1,0 +1,99 @@
+- hosts: dev
+  become: true
+
+  tasks:
+
+     
+    - name: install apache
+      yum:  
+        name: ["httpd"] 
+        state: "installed"
+    - name: start the service
+      service:
+        name: "httpd"
+        state: "started"
+    - name: enable the service
+      service:
+        name: "httpd"
+        enabled: "yes"
+    - name: installing packages
+      yum:
+        name: ["php","php-mbstring","php-gd","php-xml","php-pear","php-fpm","php-mysql","php-pdo","php-opcache"]
+        state: "installed"
+
+    - name: add repository
+      yum_repository:
+        name: EPEL Webtactic
+        description: EPEL-Webtactic repo
+        baseurl: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        mirrorlist: https://mirror.webtatic.com/yum/el7/webtatic-release.rpm                       
+
+    - name: create info.php
+      shell:
+          echo "<?php  phpinfo(); ?>" > /var/www/html/info.php
+    - name: restart the service
+      service:
+        name: "httpd"
+        state: "restarted"
+
+    - name: copy mariadb repository
+      copy:
+        src: MariaDB
+        dest: /etc/yum.repos.d/MariaDB.repo
+     
+    - name: install mariadb
+      yum:
+        name: ["mariadb-server", "mariadb"] 
+        state: "installed"
+    - name: start the service
+      service:
+        name: "mariadb"
+        state: "started"
+    - name: enable the service
+      service:
+        name: "mariadb"
+        enabled: "yes"
+
+    - name: download drupal
+      unarchive:
+        src: https://ftp.drupal.org/files/projects/drupal-8.2.6.tar.gz
+        dest: /var/www/html/drupal8
+        remote_src: yes
+            
+    - name: change dir
+      shell:
+         cd /var/www/html/drupal8/sites/default/ 
+    - name: copy settings
+      copy:
+        src: /var/www/html/drupal8/sites/default/default.settings.php
+        dest: /var/www/html/drupal8/sites/default/settings.php 
+    - name: change owner 
+      file:
+        path: /var/www/html/drupal8/
+        state: directory
+        recurse: yes
+        owner: apache
+        group: apache
+        
+
+    - name: disable SE linux
+      selinux:
+        state: disabled      
+
+
+
+
+
+     
+   
+
+
+   
+
+   
+      
+     
+     
+     
+
+  

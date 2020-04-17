@@ -1,0 +1,24 @@
+- hosts: dev 
+  become: true
+  remote_user: root 
+  vars:
+       dbname: mariadb
+       dbuser: root
+       password: root               
+       
+  tasks:
+     - name: copy conf
+       copy:
+         src: /root/.my.cnf
+         dest: /root/.my.cnf
+     - name: create new database
+       mysql_db:
+         name: drupaldb1
+         state: present
+
+     - name: create user
+       mysql_user:
+         name: drupaluser
+         password: 'Malli@123'
+         priv: '*.*:ALL'
+         state: present

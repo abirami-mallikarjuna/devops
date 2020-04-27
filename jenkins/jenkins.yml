@@ -1,0 +1,32 @@
+- hosts: localhost
+  become: true
+
+  tasks:
+
+    - name: Install java
+      yum:
+        name: ["java-1.8.0-openjdk","wget"]
+        state: "installed"
+
+    - name: Add jenkins repo and key
+      shell: rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key |
+             cd /etc/yum.repos.d/ |
+             curl -O https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    - name: Install Jenkins
+      yum:
+        name: ["jenkins"]
+        state: "installed"
+
+    - name: start jenkins service
+      service:
+        name: "jenkins"
+        state: "started"
+    - name: start jenkins service
+      service:
+        name: "jenkins"
+        enabled: "yes"
+    - name: start jenkins service
+      shell: systemctl status jenkins
+   
+  
+  

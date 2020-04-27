@@ -1,0 +1,36 @@
+- hosts: localhost
+  become: true
+
+  tasks:
+    - name: removing old versions
+      yum:
+        name: ["docker","docker-client","docker-client-latest","docker-common","docker-latest","docker-latest-logrotate","docker-logrotate","docker-engine"]
+        state: absent
+
+    - name: installing packages
+      yum:
+        name: ["yum-utils","device-mapper-persistent-data","lvm2"]
+        state: "installed"
+
+    - name: add repository
+      shell: |
+             yum-config-manager --add-repo  https://download.docker.com/linux/centos/docker-ce.repo 
+    - name: Installing docker 
+      yum:
+        name: ["docker-ce","docker-ce-cli","containerd.io"]
+        state: "installed" 
+    
+    - name: Start docker  
+      service:
+        name: "docker"
+        state: "started"
+    - name: enable docker
+      service:
+        name: "docker"
+        enabled: yes  
+        
+    - name: Install docker compose
+      shell: |
+        curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose 
+        chmod +x /usr/local/bin/docker-compose
+
